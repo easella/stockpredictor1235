@@ -3,8 +3,8 @@ import streamlit as st
 from datetime import date
 
 import yfinance as yf
-from prophet import Prophet
-from prophet.plot import plot_plotly
+from neuralprophet import NeuralProphet
+from neuralprophet.plot import plot_plotly
 from plotly import graph_objs as go
 
 START = "2015-01-01"
@@ -12,7 +12,7 @@ TODAY = date.today().strftime("%Y-%m-%d")
 
 st.title('Stock Forecast App')
 
-stocks = ('GOOG', 'AAPL', 'MSFT', 'GME')
+stocks = ('GOOG', 'AAPL', 'MSFT', 'NET','PYPL','SHCAY')
 selected_stock = st.selectbox('Select dataset for prediction', stocks)
 
 n_years = st.slider('Years of prediction:', 1, 4)
@@ -47,7 +47,7 @@ plot_raw_data()
 df_train = data[['Date','Close']]
 df_train = df_train.rename(columns={"Date": "ds", "Close": "y"})
 
-m = Prophet()
+m = NeuralProphet()
 m.fit(df_train)
 future = m.make_future_dataframe(periods=period)
 forecast = m.predict(future)
