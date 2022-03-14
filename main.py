@@ -3,8 +3,8 @@ import streamlit as st
 from datetime import date
 
 import yfinance as yf
-from neuralprophet import NeuralProphet
-from neuralprophet.plot import plot_plotly
+from prophet import Prophet
+from prophet.plot import plot_plotly
 from plotly import graph_objs as go
 
 START = "2015-01-01"
@@ -47,7 +47,7 @@ plot_raw_data()
 df_train = data[['Date','Close']]
 df_train = df_train.rename(columns={"Date": "ds", "Close": "y"})
 
-m = NeuralProphet()
+m = Prophet()
 m.fit(df_train)
 future = m.make_future_dataframe(periods=period)
 forecast = m.predict(future)
@@ -63,3 +63,4 @@ st.plotly_chart(fig1)
 st.write("Forecast components")
 fig2 = m.plot_components(forecast)
 st.write(fig2)
+
